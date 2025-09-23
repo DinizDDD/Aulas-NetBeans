@@ -70,5 +70,50 @@ public List<Cliente> listar() {
     return clientes;
 }
 
-    // Outros métodos (listar, atualizar, excluir) virão aqui...
+    public void atualizar(Cliente cliente) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            // Comando SQL para atualizar um registro na tabela clientes
+            String sql = "UPDATE clientes SET nome = ?, email = ?, telefone = ? WHERE id = ?";
+            stmt = con.prepareStatement(sql);
+
+            // Define os novos valores
+            stmt.setString(1, cliente.getNome());
+            stmt.setString(2, cliente.getEmail());
+            stmt.setString(3, cliente.getTelefone());
+            // Define o ID do cliente que será atualizado
+            stmt.setInt(4, cliente.getId());
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Cliente atualizado com sucesso!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar cliente: " +
+    ex.getMessage());
+    } finally {
+        ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+
+    public void excluir(int id) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            // Comando SQL para deletar um registro pelo ID
+            String sql = "DELETE FROM clientes WHERE id = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Cliente excluído com sucesso!");
+        } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Erro ao excluir cliente: " + ex.getMessage());
+    } finally {
+        ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+
 }

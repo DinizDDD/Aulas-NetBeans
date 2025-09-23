@@ -78,6 +78,11 @@ public class TelaClientes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblClientes);
 
         jLabel1.setText("Pesquisar:");
@@ -98,6 +103,11 @@ public class TelaClientes extends javax.swing.JFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,17 +195,57 @@ public class TelaClientes extends javax.swing.JFrame {
         cliente.setEmail(email);
         cliente.setTelefone(telefone);
 
-        // 3. Criar um objeto ClienteDAO para salvar o cliente
         ClienteDAO clienteDAO = new ClienteDAO();
+        
+        cliente.setNome(txtNome.getText());
+        cliente.setEmail(txtEmail.getText());
+        cliente.setTelefone(txtTelefone.getText());
+        
+        // Se o campo ID não estiver vazio, significa que é uma atualização
+        if (!txtId.getText().isEmpty()) {
+        cliente.setId(Integer.parseInt(txtId.getText()));
+        clienteDAO.atualizar(cliente);
+        } else {
+        // Caso contrário, é uma inserção
         clienteDAO.salvar(cliente);
-
-        // 4. Limpar os campos após salvar
+        }
+        
+        // Limpa os campos e recarrega a tabela
+        txtId.setText("");
         txtNome.setText("");
         txtEmail.setText("");
         txtTelefone.setText("");
-                
+    
         carregarTabela();
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
+        // Pega o índice da linha que foi selecionada na tabela
+    int linhaSelecionada = tblClientes.getSelectedRow();
+    
+    // Preenche os campos de texto com os valores da linha selecionada
+    // .getValueAt(linha, coluna) pega o valor de uma célula específica
+    // .toString() converte o valor para texto
+    txtId.setText(tblClientes.getValueAt(linhaSelecionada, 0).toString());
+    txtNome.setText(tblClientes.getValueAt(linhaSelecionada, 1).toString());
+    txtEmail.setText(tblClientes.getValueAt(linhaSelecionada, 2).toString());
+    txtTelefone.setText(tblClientes.getValueAt(linhaSelecionada, 3).toString());
+    }//GEN-LAST:event_tblClientesMouseClicked
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int id = Integer.parseInt(txtId.getText());
+        
+        ClienteDAO clienteDAO = new ClienteDAO();
+        clienteDAO.excluir(id);
+        
+        // Limpa os campos e recarrega a tabela
+        txtId.setText("");
+        txtNome.setText("");
+        txtEmail.setText("");
+        txtTelefone.setText("");
+        
+        carregarTabela();
+    }//GEN-LAST:event_btnExcluirActionPerformed
 
     /**
      * @param args the command line arguments
