@@ -116,4 +116,41 @@ public List<Cliente> listar() {
         }
     }
 
+    public List<Cliente> buscarPorNome(String nome) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        List<Cliente> clientes = new ArrayList<>();
+        
+        try {
+            // Comando SQL para buscar clientes por nome (usando LIKE)
+            String sql = "SELECT * FROM clientes WHERE nome LIKE ?";
+            stmt = con.prepareStatement(sql);
+            // O '%' é um coringa que busca por qualquer texto antes ou depois do termo
+        pesquisado
+            stmt.setString(1, "%" + nome + "%");
+        
+        rs = stmt.executeQuery();
+        
+            while (rs.next()) {
+                Cliente cliente = new Cliente();
+
+                cliente.setId(rs.getInt("id"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setEmail(rs.getString("email"));
+                cliente.setTelefone(rs.getString("telefone"));
+                clientes.add(cliente);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar clientes: " +
+        ex.getMessage());
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        
+        return clientes;
+    }
+
+
 }

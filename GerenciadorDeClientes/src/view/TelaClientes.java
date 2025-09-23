@@ -92,6 +92,11 @@ public class TelaClientes extends javax.swing.JFrame {
                 txtPesquisaActionPerformed(evt);
             }
         });
+        txtPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPesquisaKeyPressed(evt);
+            }
+        });
 
         btnNovo.setText("Novo");
 
@@ -246,6 +251,29 @@ public class TelaClientes extends javax.swing.JFrame {
         
         carregarTabela();
     }//GEN-LAST:event_btnExcluirActionPerformed
+
+    private void txtPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPesquisaKeyPressed
+        // Pega o texto digitado no campo de pesquisa
+        String nome = txtPesquisa.getText();
+        
+        // Pega o modelo da tabela
+        DefaultTableModel modelo = (DefaultTableModel) tblClientes.getModel();
+        // Limpa a tabela
+        modelo.setNumRows(0);
+        
+        ClienteDAO clienteDAO = new ClienteDAO();
+        
+        // Busca no banco de dados os clientes com o nome digitado
+        for (Cliente c : clienteDAO.buscarPorNome(nome)) {
+            // Adiciona os resultados da busca na tabela
+            modelo.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getEmail(),
+                c.getTelefone()
+            });
+        }
+    }//GEN-LAST:event_txtPesquisaKeyPressed
 
     /**
      * @param args the command line arguments
