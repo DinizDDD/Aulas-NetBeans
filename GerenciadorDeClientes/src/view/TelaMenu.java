@@ -17,6 +17,7 @@ public class TelaMenu extends javax.swing.JFrame {
      */
     public TelaMenu() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -40,6 +41,11 @@ public class TelaMenu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnGerenciarClientes.setText("Gerenciar Clientes");
+        btnGerenciarClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerenciarClientesActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Arquivo");
         jMenuBar1.add(jMenu1);
@@ -48,6 +54,11 @@ public class TelaMenu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         menuSair.setText("Sair");
+        menuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSairActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(menuSair);
 
         setJMenuBar(jMenuBar1);
@@ -71,6 +82,15 @@ public class TelaMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGerenciarClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerenciarClientesActionPerformed
+        TelaClientes telaDeClientes = new TelaClientes();
+        telaDeClientes.setVisible(true);
+    }//GEN-LAST:event_btnGerenciarClientesActionPerformed
+
+    private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_menuSairActionPerformed
 
     /**
      * @param args the command line arguments
