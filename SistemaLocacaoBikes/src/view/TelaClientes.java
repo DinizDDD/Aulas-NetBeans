@@ -3,6 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 
 /**
  *
@@ -55,6 +58,11 @@ public class TelaClientes extends javax.swing.JFrame {
         jLabel4.setText("Email");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setText("Editar");
 
@@ -68,6 +76,11 @@ public class TelaClientes extends javax.swing.JFrame {
         btnExcluir.setText("Excluir");
 
         btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -161,6 +174,30 @@ public class TelaClientes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnNovoActionPerformed
 
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        Cliente c = new Cliente();
+        c.setNome(txtNome.getText());
+        c.setCpf(txtCpf.getText());
+        c.setTelefone(txtTelefone());
+        c.setEmail(txtEmail());
+        
+        ClienteDAO dao = new ClienteDAO();
+        dao.create(c);
+        listarClientes();
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        listarClientes();
+    }//GEN-LAST:event_btnListarActionPerformed
+
+        public void listarClientes() {
+            List<Cliente> lista =  new ClienteDAO().read();
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0);
+                for (Cliente c : lista) {
+                    modelo.addRow(new Object[]{c.getId(), c.getNome(), c.getCpf(), c.getTelefone(), c.getEmail()});
+                }
+        }
     /**
      * @param args the command line arguments
      */
