@@ -1,8 +1,10 @@
 package dao;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Cliente;
+
 
 public class ClienteDAO {
     public void create(Cliente c) {
@@ -14,13 +16,14 @@ public class ClienteDAO {
             stmt.setString(3, c.getTelefone());
             stmt.setString(4, c.getEmail());
             stmt.executeUpdate();
+            
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getCause());
         }
     }
-    
     public List<Cliente> read() {
         List<Cliente> lista = new ArrayList<>();
+        
         try (Connection con = ConnectionFactory.getConnection()) {
             String sql = "SELECT * FROM cliente";
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -35,35 +38,36 @@ public class ClienteDAO {
                 lista.add(c);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getCause());
         }
+        
         return lista;
-}
+    }
     
     public void update(Cliente c) {
         try (Connection con = ConnectionFactory.getConnection()) {
-            String sql = "UPDATE cliente SET nome=?, cpf=?, telefone=?,email=? WHERE id=?";
-                PreparedStatement stmt = con.prepareStatement(sql);
-                stmt.setString(1, c.getNome());
-                stmt.setString(2, c.getCpf());
-                stmt.setString(3, c.getTelefone());
-                stmt.setString(4, c.getEmail());
-                stmt.setInt(5, c.getId());
-                stmt.executeUpdate();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            String sql = "UPDATE cliente SET nome=?, cpf=?, telefone=?, email=? WHERE id=?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, c.getNome());
+            stmt.setString(2, c.getCpf());
+            stmt.setString(3, c.getTelefone());
+            stmt.setString(4, c.getEmail());
+            stmt.setInt(5, c.getId());
+            stmt.executeUpdate();
+            
+        } catch (Exception e) {
+            System.err.println(e.getCause());
         }
-    
+    }
     public void delete(Cliente c) {
         try (Connection con = ConnectionFactory.getConnection()) {
             String sql = "DELETE FROM cliente WHERE id=?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setInt(1, c.getId());
             stmt.executeUpdate();
+            
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e.getCause());
         }
     }
 }
-
