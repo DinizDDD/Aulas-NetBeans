@@ -35,10 +35,12 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtCpf" min="-2" pref="71" max="-2" attributes="0"/>
                           <Component id="txtNome" min="-2" pref="71" max="-2" attributes="0"/>
-                          <Component id="txtTelefone" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
                           <Component id="txtEmail" min="-2" pref="71" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="txtCpf" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="txtTelefone" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -187,6 +189,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabelaClientesMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package view;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.Cliente;
@@ -15,6 +14,7 @@ import dao.ClienteDAO;
 public class TelaClientes extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TelaClientes.class.getName());
+    private int selectedId;
 
     /**
      * Creates new form TelaClientes
@@ -104,6 +104,11 @@ public class TelaClientes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelaClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabelaClientes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -121,10 +126,11 @@ public class TelaClientes extends javax.swing.JFrame {
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnNovo)
@@ -180,26 +186,83 @@ public class TelaClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        Bicicleta b = new Bicicleta();
-        b.setCodigo(txtCodigo.getText());
-        b.setStatus(cbStatus.getSelectedItem().toString());
-        BicicletaDAO dao = new BicicletaDAO();
-        dao.create(b);
-        listarBicicletas();
+        Cliente c = new Cliente();
+        c.setNome(txtNome.getText());
+        c.setCpf(txtCpf.getText());
+        c.setTelefone(txtTelefone.getText());
+        c.setEmail(txtEmail.getText());
+        
+        ClienteDAO dao = new ClienteDAO();
+
+        dao.create(c);
+        listarClientes();
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        listarBicicletas();
+        List<Cliente> lista = new ClienteDAO().read();
+        DefaultTableModel modelo = (DefaultTableModel) tabelaClientes.getModel();
+        modelo.setRowCount(0); // Limpa a tabela
+        
+        for (Cliente c : lista) {
+            modelo.addRow(new Object[]{c.getId(), c.getNome(), c.getCpf(),
+            c.getTelefone(), c.getEmail()});
+        }
     }//GEN-LAST:event_btnListarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        update();
+        Cliente c = new Cliente();
+        c.setId(this.selectedId);
+        c.setNome(txtNome.getText());
+        c.setCpf(txtCpf.getText());
+        c.setTelefone(txtTelefone.getText());
+        c.setEmail(txtEmail.getText());
+        
+        ClienteDAO dao = new ClienteDAO();
+        dao.update(c);
+        listarClientes();
+        
+        this.selectedId = -1;
+        currentId.setText("");
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        delete();
+        if (this.selectedId == -1) {
+            System.out.println("Nenhum cliente foi selecionado para deletar");
+            return;
+        }
+        
+        Cliente cliente = new Cliente();
+        cliente.setId(this.selectedId);
+        
+        ClienteDAO dao = new ClienteDAO();
+        dao.delete(cliente);
+        listarClientes();
     }//GEN-LAST:event_btnExcluirActionPerformed
 
+    private void tabelaClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaClientesMouseClicked
+        int linhaSelecionada = tabelaClientes.getSelectedRow();
+        System.out.println(linhaSelecionada);
+
+        this.selectedId = Integer.parseInt(tabelaClientes.getValueAt(linhaSelecionada, 0).toString());
+        currentId.setText("" + this.selectedId);
+        txtNome.setText(tabelaClientes.getValueAt(linhaSelecionada, 1).toString());
+        txtCpf.setText(tabelaClientes.getValueAt(linhaSelecionada, 2).toString());
+        txtTelefone.setText(tabelaClientes.getValueAt(linhaSelecionada, 3).toString());
+        txtEmail.setText(tabelaClientes.getValueAt(linhaSelecionada, 4).toString());
+    }//GEN-LAST:event_tabelaClientesMouseClicked
+
+    public void listarClientes() {
+        List<Cliente> lista = new ClienteDAO().read();
+        DefaultTableModel modelo = (DefaultTableModel) tabelaClientes.getModel();
+        modelo.setRowCount(0); // Limpa a tabela
+        
+        for (Cliente c : lista) {
+            modelo.addRow(new Object[]{c.getId(), c.getNome(), c.getCpf(),
+            c.getTelefone(), c.getEmail()});
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */

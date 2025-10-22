@@ -4,6 +4,9 @@
  */
 package view;
 
+import dao.BicicletaDAO;
+import model.Bicicleta;
+
 /**
  *
  * @author Etec
@@ -28,22 +31,222 @@ public class TelaBicicletas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        txtCodigo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        cbStatus = new javax.swing.JComboBox<>();
+        btnNovo = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        btnListar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaBicicletas = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Codigo");
+
+        cbStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "disponível", "locada", "manutenção" }));
+        cbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbStatusActionPerformed(evt);
+            }
+        });
+
+        btnNovo.setText("Novo");
+
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
+
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        btnListar.setText("Listar");
+        btnListar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarActionPerformed(evt);
+            }
+        });
+
+        tabelaBicicletas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabelaBicicletas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaBicicletasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaBicicletas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnNovo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEditar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnExcluir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnListar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNovo)
+                    .addComponent(btnSalvar)
+                    .addComponent(btnEditar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnListar))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void cbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbStatusActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        Bicicleta b = new Bicicleta();
+        b.setCodigo(txtCodigo.getText());
+        b.setStatus(cbStatus.getSelectedItem().toString());
+        BicicletaDAO dao = new BicicletaDAO();
+        dao.create(b);
+        listarBicicletas();// TODO add your handling code here:
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
+        listarBicicletas();
+    }//GEN-LAST:event_btnListarActionPerformed
+
+    private void tabelaBicicletasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaBicicletasMouseClicked
+        int linhaSelecionada = tabelaBicicletas.getSelectedRow();
+        System.out.println(linhaSelecionada);
+
+        this.selectedId = Integer.parseInt(tabelaBicicletas.getValueAt(linhaSelecionada, 0).toString());
+        
+        txtCodigo.setText(tabelaBicicletas.getValueAt(linhaSelecionada, 1).toString());
+        
+        String selectedStatus = tabelaBicicletas.getValueAt(linhaSelecionada, 2).toString();
+        int status_index = 0;
+        for (int i = 0; i < cbStatus.getItemCount(); i++) {
+            System.out.println(i);
+            if (cbStatus.getItemAt(i).toLowerCase().equals(selectedStatus)) {
+                status_index = i;
+                break;
+            }
+        }
+        System.out.println(status_index);
+        cbStatus.setSelectedIndex(status_index);
+    }//GEN-LAST:event_tabelaBicicletasMouseClicked
+
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        update();
+    }//GEN-LAST:event_btnEditarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        delete();
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+        public void update() {
+        if (this.selectedId == -1) {
+            return;
+        }
+        
+        Bicicleta bike = new Bicicleta();
+        bike.setId(this.selectedId);
+        bike.setCodigo(txtCodigo.getText());
+        bike.setStatus(cbStatus.getSelectedItem().toString());
+        
+        BicicletaDAO bikeDAO = new BicicletaDAO();
+        
+        bikeDAO.update(bike);
+        listarBicicletas();
+        this.selectedId = -1;
+    }
+    
+    public void delete() {
+        if (this.selectedId == -1) {
+            return;
+        }
+        
+        Bicicleta bike = new Bicicleta();
+        bike.setId(this.selectedId);
+        
+        BicicletaDAO bikeDAO = new BicicletaDAO();
+        bikeDAO.delete(bike);
+        listarBicicletas();
+    }
+    
+    public void listarBicicletas() {
+        List<Bicicleta> lista = new BicicletaDAO().read();
+        DefaultTableModel modelo = (DefaultTableModel)
+        tabelaBicicletas.getModel();
+        modelo.setRowCount(0);
+        
+        for (Bicicleta b : lista) {
+            modelo.addRow(new Object[]{b.getId(), b.getCodigo(), b.getStatus()});
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -70,5 +273,15 @@ public class TelaBicicletas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnListar;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JButton btnSalvar;
+    private javax.swing.JComboBox<String> cbStatus;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelaBicicletas;
+    private javax.swing.JTextField txtCodigo;
     // End of variables declaration//GEN-END:variables
 }
