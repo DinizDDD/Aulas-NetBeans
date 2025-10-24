@@ -4,6 +4,10 @@
  */
 package view;
 
+import dao.LocacaoDAO;
+import java.text.SimpleDateFormat;
+import model.Locacao;
+
 /**
  *
  * @author Etec
@@ -60,6 +64,11 @@ public class TelaLocacao extends javax.swing.JFrame {
         btnDevolver.setText("Devolver");
 
         btnAlugar.setText("Alugar");
+        btnAlugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlugarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -98,6 +107,27 @@ public class TelaLocacao extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAlugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlugarActionPerformed
+        Locacao locacao = new Locacao();
+        String clienteKey = cbClientes.getSelectedItem().toString();
+        String[] clienteSplit = clienteKey.split(" ");
+        locacao.setClienteId(Integer.parseInt(clienteSplit[clienteSplit.length - 1]));
+        
+        String bikeKey = cbBicicletasDisponiveis.getSelectedItem().toString();
+        String[] bikeSplit = bikeKey.split(" ");
+        
+        locacao.setBicicletaId(Integer.parseInt(bikeSplit[bikeSplit.length - 1]));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            locacao.setDataFim(formatter.parse(txtDataFim.getText()));
+        } catch (ParseException ex) {
+            System.getLogger(TelaLocacao.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
+        LocacaoDAO dao = new LocacaoDAO();
+        dao.alugar(locacao);
+    }//GEN-LAST:event_btnAlugarActionPerformed
 
     /**
      * @param args the command line arguments
